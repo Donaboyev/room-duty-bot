@@ -21,7 +21,17 @@ class ViewService(
     suspend fun startCommand(chatId: Long) {
         val user = userService.getUserByChatId(chatId)
         if (user != null) {
-
+            bot.sendMessage(
+                chatId.toChatId(),
+                "Salom, ${user.firstname} ${user.lastname}! \uD83D\uDE0A",
+                replyMarkup = replyKeyboard(resizeKeyboard = true) {
+                    row {
+                        simpleButton(Commands.TODAY)
+                        simpleButton(Commands.ME)
+                    }
+                    row { simpleButton(Commands.LAST_TEN_DAYS) }
+                }
+            )
         } else {
             bot.sendMessage(
                 chatId.toChatId(),

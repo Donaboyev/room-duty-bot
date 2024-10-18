@@ -16,7 +16,7 @@ class User(
     @Id
     val number: Int,
     val phone: String,
-    val telegramId: Long? = null,
+    var telegramId: Long? = null,
     val firstname: String? = null,
     val lastname: String? = null,
 ) : PanacheEntityBase {

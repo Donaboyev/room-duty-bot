@@ -44,6 +44,6 @@ class UserService(
     @ConsumeEvent("save_user_chat_id")
     fun saveUserChatIdEvent(info: Pair<Long, Int>): Uni<Void> =
         withTransaction {
-            User.update("chatId = ?1 where number = ?2", info.first, info.second).awaitSuspending()
+            User.update("telegramId = ?1 where number = ?2", info.first, info.second).awaitSuspending()
         }.replaceWithVoid()
 }
