@@ -3,8 +3,6 @@ package com.abbosidev.domain.user
 import io.quarkus.hibernate.reactive.panache.kotlin.PanacheCompanionBase
 import io.quarkus.hibernate.reactive.panache.kotlin.PanacheEntityBase
 import jakarta.persistence.Entity
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
@@ -12,23 +10,15 @@ import jakarta.persistence.UniqueConstraint
 @Entity
 @Table(
     name = "users",
-    uniqueConstraints = [UniqueConstraint(columnNames = ["phone", "member", "telegram_id"])],
+    uniqueConstraints = [UniqueConstraint(columnNames = ["phone", "number", "telegram_id"])],
 )
 class User(
-    @Enumerated(EnumType.STRING)
-    val member: Member,
     @Id
+    val number: Int,
     val phone: String,
     val telegramId: Long? = null,
+    val firstname: String? = null,
+    val lastname: String? = null,
 ) : PanacheEntityBase {
-    companion object : PanacheCompanionBase<User, String>
-}
-
-enum class Member {
-    SARVAR,
-    JAVOHIR,
-    DILMUROD,
-    ABBOS,
-    AMIRXON,
-    NIZOMIDDIN,
+    companion object : PanacheCompanionBase<User, Int>
 }
