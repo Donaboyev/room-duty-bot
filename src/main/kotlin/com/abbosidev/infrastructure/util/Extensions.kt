@@ -15,3 +15,9 @@ fun <T> withSession(block: suspend () -> T): Uni<T> =
     Panache.withSession {
         CoroutineScope(Dispatchers.Unconfined).async { block() }.asUni()
     }
+
+@OptIn(ExperimentalCoroutinesApi::class)
+fun <T> withTransaction(block: suspend () -> T): Uni<T> =
+    Panache.withTransaction {
+        CoroutineScope(Dispatchers.Unconfined).async { block() }.asUni()
+    }

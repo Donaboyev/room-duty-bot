@@ -61,9 +61,12 @@ class TelegramBotService(
                     val chatId = it.chat.id.chatId.long
                     val phone = it.content.contact.phoneNumber.removePrePlus()
                     val userId = it.content.contact.userId?.chatId?.long
-                    val firstname = it.content.contact.firstName
-                    val lastname = it.content.contact.lastName
-
+                    val messageId = it.messageId
+                    if (userId != chatId) {
+                        viewService.sendOwnContact(chatId, messageId)
+                        return@onContact
+                    }
+                    viewService.linkContact(chatId, phone, messageId)
                 }
             }
             bot.startGettingOfUpdatesByLongPolling(
