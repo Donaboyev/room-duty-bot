@@ -20,6 +20,7 @@ import org.jboss.logging.Logger
 @ApplicationScoped
 class TelegramBotService(
     private val bot: TelegramBot,
+    private val viewService: ViewService,
     private val logger: Logger,
 ) {
 
@@ -29,7 +30,7 @@ class TelegramBotService(
         CoroutineScope(Dispatchers.IO).launch {
             val behaviour = bot.buildBehaviour {
                 onCommand("start", initialFilter = { it is PrivateContentMessage }) {
-
+                    viewService.startCommand(it.chat.id.chatId.long)
                 }
                 onContentMessage(initialFilter = { it is PrivateContentMessage }) {
                     logger.info("Received message: $it")
@@ -43,6 +44,7 @@ class TelegramBotService(
                                     Commands.TODAY -> {
 
                                     }
+
                                     Commands.LAST_TEN_DAYS -> {}
                                     Commands.ME -> {
 
@@ -50,6 +52,7 @@ class TelegramBotService(
                                 }
                             }
                         }
+
                         else -> {
                         }
                     }

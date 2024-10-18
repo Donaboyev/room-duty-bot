@@ -27,7 +27,6 @@ dependencies {
     implementation("io.quarkus:quarkus-smallrye-graphql")
     implementation("io.quarkus:quarkus-hibernate-reactive-panache-kotlin")
     implementation("io.quarkus:quarkus-reactive-pg-client")
-    implementation("io.quarkus:quarkus-redis-client")
     implementation("io.quarkus:quarkus-cache")
     implementation("dev.inmo:tgbotapi:$tgBotApiVersion")
     testImplementation("io.quarkus:quarkus-junit5")
