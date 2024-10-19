@@ -1,6 +1,7 @@
 package com.abbosidev.domain.user
 
 import com.abbosidev.infrastructure.util.withTransaction
+import io.quarkus.panache.common.Page
 import io.quarkus.panache.common.Sort
 import io.quarkus.vertx.ConsumeEvent
 import io.smallrye.mutiny.coroutines.awaitSuspending
@@ -16,6 +17,12 @@ class DutyService(
     suspend fun getTodaysDuty(chatId: Long): Duty =
         UniHelper.toUni(
             bus.request<Duty>("get_todays_duty", chatId)
+                .map { it.body() }
+        ).awaitSuspending()
+
+    suspend fun getLastTenDaysDuties(chatId: Long): List<Duty> =
+        UniHelper.toUni(
+            bus.request<List<Duty>>("get_last_ten_days_duties", chatId)
                 .map { it.body() }
         ).awaitSuspending()
 
@@ -42,5 +49,12 @@ class DutyService(
             }
             Duty.find("date = ?1", Sort.descending("date"), today)
                 .firstResult().awaitSuspending()
+        }
+
+    @ConsumeEvent("get_last_ten_days_duties")
+    fun getLastTenDaysDutiesEvent(chatId: Long) =
+        withTransaction {
+            Duty.find("date < ?1",Sort.descending("date"), LocalDate.now())
+                .page(Page.ofSize(10)).list().awaitSuspending()
         }
 }

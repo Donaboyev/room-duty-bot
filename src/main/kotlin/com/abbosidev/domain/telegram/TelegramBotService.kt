@@ -45,7 +45,9 @@ class TelegramBotService(
                                         viewService.getTodaysDuty(chatId)
                                     }
 
-                                    Commands.LAST_TEN_DAYS -> {}
+                                    Commands.LAST_TEN_DAYS -> {
+                                        viewService.getLastTenDaysDuties(chatId)
+                                    }
                                     Commands.ME -> {
 
                                     }
@@ -64,9 +66,9 @@ class TelegramBotService(
                     val messageId = it.messageId
                     if (userId != chatId) {
                         viewService.sendOwnContact(chatId, messageId)
-                        return@onContact
+                    } else {
+                        viewService.linkContact(chatId, phone, messageId)
                     }
-                    viewService.linkContact(chatId, phone, messageId)
                 }
             }
             bot.startGettingOfUpdatesByLongPolling(

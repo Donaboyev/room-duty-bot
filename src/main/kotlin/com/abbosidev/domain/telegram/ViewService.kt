@@ -108,4 +108,16 @@ class ViewService(
             MarkdownParseMode
         )
     }
+
+    suspend fun getLastTenDaysDuties(chatId: Long) {
+        val duties = dutyService.getLastTenDaysDuties(chatId)
+        val message = duties.joinToString("\n\n") {
+            "*${it.date}* -> _${it.user.firstname} ${it.user.lastname}_ning navbatchilik kuni"
+        }
+        bot.sendMessage(
+            chatId.toChatId(),
+            message,
+            MarkdownParseMode
+        )
+    }
 }
