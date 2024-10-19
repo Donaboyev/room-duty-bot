@@ -1,5 +1,6 @@
 package com.abbosidev.domain.telegram
 
+import com.abbosidev.domain.user.DutyService
 import com.abbosidev.domain.user.UserService
 import dev.inmo.tgbotapi.bot.TelegramBot
 import dev.inmo.tgbotapi.extensions.api.send.sendMessage
@@ -17,6 +18,7 @@ import jakarta.enterprise.context.ApplicationScoped
 class ViewService(
     private val bot: TelegramBot,
     private val userService: UserService,
+    private val dutyService: DutyService,
 ) {
     suspend fun startCommand(chatId: Long) {
         val user = userService.getUserByChatId(chatId)
@@ -98,6 +100,12 @@ class ViewService(
     }
 
     suspend fun getTodaysDuty(chatId: Long) {
-
+        val duty = dutyService.getTodaysDuty(chatId)
+        bot.sendMessage(
+            chatId.toChatId(),
+            "Bugun ${duty.date}  \n"+
+            "_${duty.user.firstname} ${duty.user.lastname}_ning navbatchilik kuni",
+            MarkdownParseMode
+        )
     }
 }
