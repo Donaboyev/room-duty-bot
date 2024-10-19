@@ -120,4 +120,13 @@ class ViewService(
             MarkdownParseMode
         )
     }
+
+    suspend fun getMyDutyDate(chatId: Long) {
+        val date = dutyService.getMyDutyDate(chatId)
+        bot.sendMessage(
+            chatId.toChatId(),
+            "Sizning navbatchilik kuningiz: _${date}_",
+            MarkdownParseMode
+        )
+    }
 }

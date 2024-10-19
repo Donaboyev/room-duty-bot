@@ -38,7 +38,6 @@ class TelegramBotService(
                         is PrivateContentMessage -> {
                             val text = (it.content as? TextContent)?.text
                             val chatId = it.chat.id.chatId.long
-                            val messageId = it.messageId.long
                             if (!text.isNullOrBlank()) {
                                 when (text) {
                                     Commands.TODAY -> {
@@ -48,8 +47,9 @@ class TelegramBotService(
                                     Commands.LAST_TEN_DAYS -> {
                                         viewService.getLastTenDaysDuties(chatId)
                                     }
-                                    Commands.ME -> {
 
+                                    Commands.ME -> {
+                                        viewService.getMyDutyDate(chatId)
                                     }
                                 }
                             }
