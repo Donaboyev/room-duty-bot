@@ -1,8 +1,9 @@
 package com.abbosidev.domain.user
 
-import io.quarkus.hibernate.reactive.panache.kotlin.PanacheCompanion
-import io.quarkus.hibernate.reactive.panache.kotlin.PanacheEntity
+import io.quarkus.hibernate.reactive.panache.kotlin.PanacheCompanionBase
+import io.quarkus.hibernate.reactive.panache.kotlin.PanacheEntityBase
 import jakarta.persistence.Entity
+import jakarta.persistence.Id
 import jakarta.persistence.OneToOne
 import jakarta.persistence.Table
 import java.time.LocalDate
@@ -12,7 +13,8 @@ import java.time.LocalDate
 class Duty(
     @OneToOne
     val user: User,
+    @Id
     val date: LocalDate = LocalDate.now(),
-) : PanacheEntity() {
-    companion object : PanacheCompanion<Duty>
+) : PanacheEntityBase {
+    companion object : PanacheCompanionBase<Duty, LocalDate>
 }

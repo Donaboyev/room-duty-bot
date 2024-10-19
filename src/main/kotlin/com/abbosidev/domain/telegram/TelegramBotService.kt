@@ -42,7 +42,7 @@ class TelegramBotService(
                             if (!text.isNullOrBlank()) {
                                 when (text) {
                                     Commands.TODAY -> {
-
+                                        viewService.getTodaysDuty(chatId)
                                     }
 
                                     Commands.LAST_TEN_DAYS -> {}

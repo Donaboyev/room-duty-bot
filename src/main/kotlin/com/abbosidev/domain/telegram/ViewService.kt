@@ -96,4 +96,8 @@ class ViewService(
             )
         }
     }
+
+    suspend fun getTodaysDuty(chatId: Long) {
+
+    }
 }
