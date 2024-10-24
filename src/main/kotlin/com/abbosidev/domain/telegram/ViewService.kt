@@ -11,9 +11,7 @@ import dev.inmo.tgbotapi.extensions.utils.types.buttons.requestContactButton
 import dev.inmo.tgbotapi.extensions.utils.types.buttons.simpleButton
 import dev.inmo.tgbotapi.types.MessageId
 import dev.inmo.tgbotapi.types.message.MarkdownParseMode
-import dev.inmo.tgbotapi.types.message.textsources.mention
 import dev.inmo.tgbotapi.types.toChatId
-import dev.inmo.tgbotapi.utils.buildEntities
 import dev.inmo.tgbotapi.utils.row
 import jakarta.enterprise.context.ApplicationScoped
 import org.eclipse.microprofile.config.inject.ConfigProperty
@@ -31,7 +29,7 @@ class ViewService(
         if (user != null) {
             bot.sendMessage(
                 chatId.toChatId(),
-                "Salom, ${user.firstname} ${user.lastname}! \uD83D\uDE0A",
+                "Assalomu alaykum, ${user.firstname} ${user.lastname}! \uD83D\uDE0A",
                 replyMarkup = replyKeyboard(resizeKeyboard = true) {
                     row {
                         simpleButton(Commands.TODAY)
@@ -81,7 +79,7 @@ class ViewService(
             )
             bot.sendMessage(
                 chatId.toChatId(),
-                "Salom, ${user.firstname} ${user.lastname}! \uD83D\uDE0A",
+                "Xush kelibsiz, ${user.firstname} ${user.lastname}! \uD83D\uDE0A",
                 replyMarkup = replyKeyboard(resizeKeyboard = true) {
                     row {
                         simpleButton(Commands.TODAY)
@@ -137,12 +135,8 @@ class ViewService(
     }
 
     suspend fun yourDutyIsToday(user: User, nextUser: User) {
-//        bot.sendMessage(
-//            user.telegramId!!.toChatId(),
-//            "Bugun sizning navbatchilik kuningiz, ${user.firstname} ${user.lastname}!",
-//        )
         bot.sendMessage(
-            666371656.toChatId(),
+            user.telegramId!!.toChatId(),
             "Bugun sizning navbatchilik kuningiz, ${user.firstname} ${user.lastname}!",
         )
 //        bot.sendMessage(
@@ -150,11 +144,11 @@ class ViewService(
 //            buildEntities {
 //                "Bugun " + mention(
 //                    "${user.firstname} ${user.lastname}",
-//                    user.telegramId!!.toChatId()
+//                    RawChatId(666371656),
 //                ) + "ning navbatchilik kuni. \n" +
 //                        "Ertaga " + mention(
 //                    "${nextUser.firstname} ${nextUser.lastname}",
-//                    nextUser.telegramId!!.toChatId()
+//                    RawChatId(666371656),
 //                ) + "ning navbatchilik kuni"
 //            }
 //        )
