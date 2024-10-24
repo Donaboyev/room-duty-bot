@@ -1,6 +1,7 @@
 package com.abbosidev.domain.telegram
 
 import com.abbosidev.domain.user.DutyService
+import com.abbosidev.domain.user.User
 import com.abbosidev.domain.user.UserService
 import dev.inmo.tgbotapi.bot.TelegramBot
 import dev.inmo.tgbotapi.extensions.api.send.sendMessage
@@ -10,15 +11,20 @@ import dev.inmo.tgbotapi.extensions.utils.types.buttons.requestContactButton
 import dev.inmo.tgbotapi.extensions.utils.types.buttons.simpleButton
 import dev.inmo.tgbotapi.types.MessageId
 import dev.inmo.tgbotapi.types.message.MarkdownParseMode
+import dev.inmo.tgbotapi.types.message.textsources.mention
 import dev.inmo.tgbotapi.types.toChatId
+import dev.inmo.tgbotapi.utils.buildEntities
 import dev.inmo.tgbotapi.utils.row
 import jakarta.enterprise.context.ApplicationScoped
+import org.eclipse.microprofile.config.inject.ConfigProperty
 
 @ApplicationScoped
 class ViewService(
     private val bot: TelegramBot,
     private val userService: UserService,
     private val dutyService: DutyService,
+    @ConfigProperty(name = "telegram.group.id", defaultValue = "0")
+    private val groupId: Long,
 ) {
     suspend fun startCommand(chatId: Long) {
         val user = userService.getUserByChatId(chatId)
@@ -100,11 +106,11 @@ class ViewService(
     }
 
     suspend fun getTodaysDuty(chatId: Long) {
-        val duty = dutyService.getTodaysDuty(chatId)
+        val duty = dutyService.getTodaysDuty()
         bot.sendMessage(
             chatId.toChatId(),
-            "Bugun ${duty.date}  \n"+
-            "_${duty.user.firstname} ${duty.user.lastname}_ning navbatchilik kuni",
+            "Bugun ${duty.date}  \n" +
+                    "_${duty.user.firstname} ${duty.user.lastname}_ning navbatchilik kuni",
             MarkdownParseMode
         )
     }
@@ -129,4 +135,25 @@ class ViewService(
             MarkdownParseMode
         )
     }
+
+    suspend fun yourDutyIsToday(user: User, nextUser: User) {
+        bot.sendMessage(
+            user.telegramId!!.toChatId(),
+            "Bugun sizning navbatchilik kuningiz, ${user.firstname} ${user.lastname}!",
+        )
+//        bot.sendMessage(
+//            groupId.toChatId(),
+//            buildEntities {
+//                "Bugun " + mention(
+//                    "${user.firstname} ${user.lastname}",
+//                    user.telegramId!!.toChatId()
+//                ) + "ning navbatchilik kuni. \n" +
+//                        "Ertaga " + mention(
+//                    "${nextUser.firstname} ${nextUser.lastname}",
+//                    nextUser.telegramId!!.toChatId()
+//                ) + "ning navbatchilik kuni"
+//            }
+//        )
+    }
+
 }

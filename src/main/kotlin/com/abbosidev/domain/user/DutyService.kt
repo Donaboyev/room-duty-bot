@@ -17,10 +17,10 @@ import kotlin.math.absoluteValue
 class DutyService(
     private val bus: EventBus,
 ) {
-    suspend fun getTodaysDuty(chatId: Long): Duty {
+    suspend fun getTodaysDuty(): Duty {
         bus.publish("check_duties_order", Any())
         return UniHelper.toUni(
-            bus.request<Duty>("get_todays_duty", chatId)
+            bus.request<Duty>("get_todays_duty", Any())
                 .map { it.body() }
         ).awaitSuspending()
     }
@@ -65,7 +65,7 @@ class DutyService(
         }.replaceWithVoid()
 
     @ConsumeEvent("get_todays_duty")
-    fun getTodaysDutyEvent(chatId: Long) =
+    fun getTodaysDutyEvent(any: Any) =
         withSession {
             Duty.find("date = ?1", Sort.descending("date"), LocalDate.now())
                 .firstResult().awaitSuspending()
