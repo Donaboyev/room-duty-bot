@@ -137,8 +137,12 @@ class ViewService(
     }
 
     suspend fun yourDutyIsToday(user: User, nextUser: User) {
+//        bot.sendMessage(
+//            user.telegramId!!.toChatId(),
+//            "Bugun sizning navbatchilik kuningiz, ${user.firstname} ${user.lastname}!",
+//        )
         bot.sendMessage(
-            user.telegramId!!.toChatId(),
+            666371656.toChatId(),
             "Bugun sizning navbatchilik kuningiz, ${user.firstname} ${user.lastname}!",
         )
 //        bot.sendMessage(

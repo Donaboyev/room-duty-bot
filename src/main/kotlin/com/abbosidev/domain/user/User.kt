@@ -8,10 +8,7 @@ import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
 
 @Entity
-@Table(
-    name = "users",
-    uniqueConstraints = [UniqueConstraint(columnNames = ["phone", "number", "telegram_id"])],
-)
+@Table(name = "users")
 class User(
     @Id
     val number: Int,

@@ -13,6 +13,12 @@ import jakarta.enterprise.context.ApplicationScoped
 class UserService(
     private val bus: EventBus,
 ) {
+    suspend fun getUserByNumber(number: Int): User =
+        UniHelper.toUni(
+            bus.request<User>("get_user_by_number", number)
+                .map { it.body() }
+        ).awaitSuspending()
+
     suspend fun getUserByChatId(chatId: Long): User? =
         UniHelper.toUni(
             bus.request<User?>("get_user_by_chat_id", chatId)
@@ -33,6 +39,12 @@ class UserService(
     fun getUserByChatIdEvent(chatId: Long) =
         withSession {
             User.find("telegramId", chatId).firstResult().awaitSuspending()
+        }
+
+    @ConsumeEvent("get_user_by_number")
+    fun getUserByNumberEvent(number: Int) =
+        withSession {
+            User.findById(number).awaitSuspending()
         }
 
     @ConsumeEvent("get_user_by_phone")
