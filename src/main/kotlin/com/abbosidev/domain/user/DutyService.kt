@@ -10,14 +10,12 @@ import io.smallrye.mutiny.coroutines.awaitSuspending
 import io.smallrye.mutiny.vertx.UniHelper
 import io.vertx.core.eventbus.EventBus
 import jakarta.enterprise.context.ApplicationScoped
-import org.jboss.logging.Logger
 import java.time.LocalDate
 import kotlin.math.absoluteValue
 
 @ApplicationScoped
 class DutyService(
     private val bus: EventBus,
-    private val logger: Logger,
 ) {
     suspend fun getTodaysDuty(): Duty {
         bus.publish("check_duties_order", Any())
@@ -86,6 +84,6 @@ class DutyService(
             val duty = Duty.find("date", Sort.descending("date"), today)
                 .firstResult().awaitSuspending()
             val user = User.find("telegramId", chatId).firstResult().awaitSuspending()
-            today.plusDays((user!!.number - duty!!.user.number).absoluteValue.toLong())
+            today.plusDays(6 - (user!!.number - duty!!.user.number).absoluteValue.toLong())
         }
 }
